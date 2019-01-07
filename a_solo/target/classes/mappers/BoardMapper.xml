@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="lab.board.BoardMapper">
+ 
+ 	<!-- ############룸메게시판 ##################### -->
+	<!-- 리스트가져오는 select문-->
+	<select id="list" resultType="lab.solo.vo.Article" parameterType="hashmap">
+		select rn,num, area, subject, writer, idate, rcount 
+		from(select @ROWNUM := @ROWNUM + 1 AS rn, num, area, subject, writer, idate, rcount from roommate,
+		(select @rownum:=0) tmp) a
+		where rn &gt; #{start} and rn &lt;=#{end}
+		order by rn desc;    
+	  </select>
+
+  	<select id="checkReply" parameterType="_int"
+  							resultType="lab.solo.vo.Article">
+  		select num, subject, writer, idate, rcount
+  		from bbs_reply
+  		where rnum = #{num}
+  	</select>
+  	
+  	<!-- 전체 페이지계산 -->
+  	<select id="pageCount" resultType="_int">
+  		select count(*) from roommate
+  	</select>
+  	
+	<!-- 글 쓰기 -->
+  	<insert id="insert_bbs" parameterType="lab.solo.vo.Board">
+  	insert into roommate(subject, area, writer, idate,contents, ip,file)
+  	values (#{subject},#{area} ,#{writer},  now(), #{contents}, #{ip},#{file})
+  	</insert>
+  	
+  	<!-- 답글쓰기 -->
+  	<insert id="insert_bbsreply" parameterType="lab.solo.vo.Board">
+  	insert into bbs_reply(subject, writer, password, idate, html ,
+  					contents, ip,rnum)
+  	values ( #{subject}, #{writer}, #{password}, now(), 
+  			#{html}, #{contents}, #{ip},#{rnum})
+  	</insert>
+  	
+  	<!-- 글읽기 -->
+  	<select id="read_bbs" parameterType="_int" resultType="lab.solo.vo.Board">
+  		select num, subject, writer, idate, html,
+  				contents,  ip, rcount,file
+  		from roommate
+  		where num=#{num}
+  	</select>
+  	
+  	
+  	<update id="rcount_bbs" parameterType="_int">
+  		update roommate set rcount = rcount +1
+  		where num=#{num}
+  	</update>
+  	
+  	
+  	<!-- 답변글 카운트 -->
+  	<select id="reply_count" parameterType="_int" resultType="_int">
+	  	select count(num) from bbs_reply
+	  	where rnum = #{num}
+  	</select>
+  	
+  	
+ 	<!-- 글수정 -->
+  	<update id="modify_bbs" parameterType="lab.solo.vo.Board">
+  		update roommate set subject=#{subject}, contents=#{contents}, area =#{area}
+  		where num=#{num}
+  	</update>
+  	
+  		<!-- 답글수정 -->
+  	<update id="modify_bbsreply" parameterType="lab.solo.vo.Board">
+  		update bbs_reply set subject=#{subject}, contents=#{contents}, area =#{area}
+  		where num=#{num}
+  	</update>
+  	
+ 	<!--게시글 제거 -->
+  	<delete id="remove_bbs" parameterType="_int">
+  		delete from roommate where num = #{num}
+  	</delete>
+  	
+  
+   	<!-- 댓글읽기  -->
+  	<select id="read_comment" parameterType="_int"
+  								resultType="lab.solo.vo.Comment">
+  		select num, writer, idate, contents, password, ip
+  		from bbs_comment
+  		where rnum = #{num}													
+  	</select>
+  	
+  	<!-- 댓글 쓰기 -->
+  	<insert id="comment_save"  parameterType="lab.solo.vo.Comment">
+    insert into bbs_comment (rnum, writer,	 idate, contents, 
+		    password, ip)  
+			values (#{rnum}, #{writer}, now() , 
+			#{contents}, #{password}, #{ip} ) 
+   </insert>
+   
+   <!-- 댓글 삭제 -->
+   <delete id="comment_remove" parameterType="lab.solo.vo.Comment">
+	delete from bbs_comment 
+  	 where  num = #{num} and password = #{password}
+   </delete>
+   
+   <!-- 지역별 리스트 -->
+   <!-- 리스트가져오는 select문-->
+	<select id="listnamgu" resultType="lab.solo.vo.Article" parameterType="hashmap">
+		select rn,num, area, subject, writer, idate, rcount 
+		from(select @ROWNUM := @ROWNUM + 1 AS rn, num, area, subject, writer, idate, rcount from roommate,
+		(select @rownum:=0) tmp) a
+		where rn &gt; #{start} and rn &lt;=#{end} and area='남구'
+		order by rn desc;    
+	  </select>
+  	<!-- 전체 페이지계산 -->
+  	<select id="pageCountnamgu" resultType="_int">
+  		select count(*) from roommate
+  	</select>
+  	
+  	
+  	
+  	 <!-- 리스트가져오는 select문-->
+	<select id="listhea" resultType="lab.solo.vo.Article" parameterType="hashmap">
+		select rn,num, area, subject, writer, idate, rcount 
+		from(select @ROWNUM := @ROWNUM + 1 AS rn, num, area, subject, writer, idate, rcount from roommate,
+		(select @rownum:=0) tmp) a
+		where rn &gt; #{start} and rn &lt;=#{end} and area='해운대구'
+		order by rn desc;    
+	  </select>
+  	<!-- 전체 페이지계산 -->
+  	<select id="pageCounthea" resultType="_int">
+  		select count(*) from roommate
+  	</select>
+  	
+  	 <!-- 리스트가져오는 select문-->
+	<select id="listseo" resultType="lab.solo.vo.Article" parameterType="hashmap">
+		select rn,num, area, subject, writer, idate, rcount 
+		from(select @ROWNUM := @ROWNUM + 1 AS rn, num, area, subject, writer, idate, rcount from roommate,
+		(select @rownum:=0) tmp) a
+		where rn &gt; #{start} and rn &lt;=#{end} and area='서구'
+		order by rn desc;    
+	  </select>
+  	<!-- 전체 페이지계산 -->
+  	<select id="pageCountseo" resultType="_int">
+  		select count(*) from roommate
+  	</select>
+  	
+  	 <!-- 리스트가져오는 select문-->
+	<select id="listsa" resultType="lab.solo.vo.Article" parameterType="hashmap">
+		select rn,num, area, subject, writer, idate, rcount 
+		from(select @ROWNUM := @ROWNUM + 1 AS rn, num, area, subject, writer, idate, rcount from roommate,
+		(select @rownum:=0) tmp) a
+		where rn &gt; #{start} and rn &lt;=#{end} and area='사하구'
+		order by rn desc;    
+	  </select>
+  	<!-- 전체 페이지계산 -->
+  	<select id="pageCountsa" resultType="_int">
+  		select count(*) from roommate
+  	</select>
+  	
+  	 <!-- 리스트가져오는 select문-->
+	<select id="listgum" resultType="lab.solo.vo.Article" parameterType="hashmap">
+		select rn,num, area, subject, writer, idate, rcount 
+		from(select @ROWNUM := @ROWNUM + 1 AS rn, num, area, subject, writer, idate, rcount from roommate,
+		(select @rownum:=0) tmp) a
+		where rn &gt; #{start} and rn &lt;=#{end} and area='금정구'
+		order by rn desc;    
+	  </select>
+  	<!-- 전체 페이지계산 -->
+  	<select id="pageCountgum" resultType="_int">
+  		select count(*) from roommate
+  	</select>
+  	
+  	 <!-- 리스트가져오는 select문-->
+	<select id="listbuk" resultType="lab.solo.vo.Article" parameterType="hashmap">
+		select rn,num, area, subject, writer, idate, rcount 
+		from(select @ROWNUM := @ROWNUM + 1 AS rn, num, area, subject, writer, idate, rcount from roommate,
+		(select @rownum:=0) tmp) a
+		where rn &gt; #{start} and rn &lt;=#{end} and area='북구'
+		order by rn desc;    
+	  </select>
+  	<!-- 전체 페이지계산 -->
+  	<select id="pageCountbuk" resultType="_int">
+  		select count(*) from roommate
+  	</select>
+  	
+  	 <!-- 리스트가져오는 select문-->
+	<select id="listyeon" resultType="lab.solo.vo.Article" parameterType="hashmap">
+		select rn,num, area, subject, writer, idate, rcount 
+		from(select @ROWNUM := @ROWNUM + 1 AS rn, num, area, subject, writer, idate, rcount from roommate,
+		(select @rownum:=0) tmp) a
+		where rn &gt; #{start} and rn &lt;=#{end} and area='연제구'
+		order by rn desc;    
+	  </select>
+  	<!-- 전체 페이지계산 -->
+  	<select id="pageCountyeon" resultType="_int">
+  		select count(*) from roommate
+  	</select>
+   
+  	
+  	<!-- ############ 자유게시판 ##################### -->
+  	
+  	<!-- 리스트가져오는 select문-->
+	<select id="list2" resultType="lab.solo.vo.Article" parameterType="hashmap">
+		select rn,num, area, subject, writer, idate, rcount 
+		from(select @ROWNUM := @ROWNUM + 1 AS rn, num, area, subject, writer, idate, rcount from freeboard,
+		(select @rownum:=0) tmp) a
+		where rn &gt; #{start} and rn &lt;=#{end}
+		order by rn desc;    
+	  </select>
+
+  	<!-- 전체 페이지계산 -->
+  	<select id="pageCount2" resultType="_int">
+  		select count(*) from freeboard
+  	</select>
+
+  	<!-- 글 쓰기 -->
+  	<insert id="insert2_bbs" parameterType="lab.solo.vo.Board">
+  	insert into freeboard(subject, area, writer, idate,contents, ip,file)
+  	values (#{subject},#{area} ,#{writer},  now(), #{contents}, #{ip},#{file})
+  	</insert>
+  	
+  	<!-- 글읽기 -->
+  	<select id="read2_bbs" parameterType="_int" resultType="lab.solo.vo.Board">
+  		select num, subject, writer, idate, html,
+  				contents,  ip, rcount,file
+  		from freeboard
+  		where num=#{num}
+  	</select>
+  	
+  	
+  	<update id="rcount2_bbs" parameterType="_int">
+  		update freeboard set rcount = rcount +1
+  		where num=#{num}
+  	</update>
+  	
+  	<!-- 댓글읽기  -->
+  	<select id="read2_comment" parameterType="_int"
+  								resultType="lab.solo.vo.Comment">
+  		select num, writer, idate, contents, password, ip
+  		from bbs_comment2
+  		where rnum = #{num}													
+  	</select>
+  	
+  	 <!-- 글수정 -->
+  	<update id="modify2_bbs" parameterType="lab.solo.vo.Board">
+  		update freeboard set subject=#{subject}, contents=#{contents} , area=#{area}
+  		where num=#{num}
+  	</update>
+  	
+  	<!--게시글 제거 -->
+  	<delete id="remove2_bbs" parameterType="_int">
+  		delete from freeboard where num = #{num}
+  	</delete>
+  	
+  	<!-- 댓글 쓰기 -->
+  	<insert id="comment2_save"  parameterType="lab.solo.vo.Comment">
+    insert into bbs_comment2 (rnum, writer,	idate, contents, 
+		    password, ip)  
+			values (#{rnum}, #{writer}, now() , 
+			#{contents}, #{password}, #{ip} ) 
+   </insert>
+   
+   <!-- 댓글 삭제 -->
+   <delete id="comment2_remove" parameterType="lab.solo.vo.Comment">
+	delete from bbs_comment2  
+  	 where  num = #{num} and password = #{password}
+   </delete>
+  	
+  	 <!-- 검색-->
+	<select id="search2" resultType="lab.solo.vo.Article" parameterType="hashmap">
+		select rn,num, area, subject, writer, idate, rcount 
+		from(select @ROWNUM := @ROWNUM + 1 AS rn, num, area, subject, writer, idate, rcount from freeboard,
+		(select @rownum:=0) tmp) a
+		where subject like #{subject}
+		order by rn desc;    
+	  </select>
+   	<!-- ############ 공지사항##################### -->
+  	
+  	<!-- 리스트가져오는 select문-->
+	<select id="list3" resultType="lab.solo.vo.Article" parameterType="hashmap">
+		select rn,num, category , subject, writer, idate, rcount 
+		from(select @ROWNUM := @ROWNUM + 1 AS rn, num, category , subject, writer, idate, rcount from notice,
+		(select @rownum:=0) tmp) a
+		where rn &gt; #{start} and rn &lt;=#{end}
+		order by rn desc;    
+	  </select>
+
+  	<!-- 전체 페이지계산 -->
+  	<select id="pageCount3" resultType="_int">
+  		select count(*) from notice
+  	</select>
+
+  	<!-- 글 쓰기 -->
+  	<insert id="insert3_bbs" parameterType="lab.solo.vo.Board">
+  	insert into notice(subject, category , writer, idate,contents, ip)
+  	values (#{subject},#{category} ,#{writer},  now(), #{contents}, #{ip})
+  	</insert>
+  	
+  	<!-- 글읽기 -->
+  	<select id="read3_bbs" parameterType="_int" resultType="lab.solo.vo.Board">
+  		select num, subject, writer, idate, html,
+  				contents,  ip, rcount
+  		from notice
+  		where num=#{num}
+  	</select>
+  	
+  	
+  	<update id="rcount3_bbs" parameterType="_int">
+  		update notice set rcount = rcount +1
+  		where num=#{num}
+  	</update>
+  	
+  	 <!-- 글수정 -->
+  	<update id="modify3_bbs" parameterType="lab.solo.vo.Board">
+  		update notice set subject=#{subject}, contents=#{contents} , category =#{category}
+  		where num=#{num}
+  	</update>
+  	
+  	<!--게시글 제거 -->
+  	<delete id="remove3_bbs" parameterType="_int">
+  		delete from notice where num = #{num}
+  	</delete>
+  	
+  	<!-- ############ 거래게시판 ##################### -->
+  	
+  	<!-- 리스트가져오는 select문-->
+	<select id="list4" resultType="lab.solo.vo.Article" parameterType="hashmap">
+		select rn,num, category, subject, writer, idate, rcount 
+		from(select @ROWNUM := @ROWNUM + 1 AS rn, num, category, subject, writer, idate, rcount from trade,
+		(select @rownum:=0) tmp) a
+		where rn &gt; #{start} and rn &lt;=#{end}
+		order by rn desc;    
+	  </select>
+
+  	<!-- 전체 페이지계산 -->
+  	<select id="pageCount4" resultType="_int">
+  		select count(*) from trade
+  	</select>
+
+  	<!-- 글 쓰기 -->
+  	<insert id="insert4_bbs" parameterType="lab.solo.vo.Board">
+  	insert into trade(subject, category, writer, idate,contents, ip,file)
+  	values (#{subject},#{category} ,#{writer},  now(), #{contents}, #{ip},#{file})
+  	</insert>
+  	
+  	<!-- 글읽기 -->
+  	<select id="read4_bbs" parameterType="_int" resultType="lab.solo.vo.Board">
+  		select num, subject, writer, idate, html,
+  				contents,  ip, rcount,file,category
+  		from trade
+  		where num=#{num}
+  	</select>
+  	
+  	
+  	<update id="rcount4_bbs" parameterType="_int">
+  		update trade set rcount = rcount +1
+  		where num=#{num}
+  	</update>
+  	
+  	<!-- 댓글읽기  -->
+  	<select id="read4_comment" parameterType="_int"
+  								resultType="lab.solo.vo.Comment">
+  		select num, writer, idate, contents, password, ip
+  		from bbs_comment3
+  		where rnum = #{num}													
+  	</select>
+  	
+  	 <!-- 글수정 -->
+  	<update id="modify4_bbs" parameterType="lab.solo.vo.Board">
+  		update trade set subject=#{subject}, contents=#{contents} , category=#{category}
+  		where num=#{num}
+  	</update>
+  	
+  	<!--게시글 제거 -->
+  	<delete id="remove4_bbs" parameterType="_int">
+  		delete from trade where num = #{num}
+  	</delete>
+  	
+  	<!-- 댓글 쓰기 -->
+  	<insert id="comment4_save"  parameterType="lab.solo.vo.Comment">
+    insert into bbs_comment3 (rnum, writer,	idate, contents, 
+		    password, ip)  
+			values (#{rnum}, #{writer}, now() , 
+			#{contents}, #{password}, #{ip} ) 
+   </insert>
+   
+   <!-- 댓글 삭제 -->
+   <delete id="comment4_remove" parameterType="lab.solo.vo.Comment">
+	delete from bbs_comment3 
+  	 where  num = #{num} and password = #{password}
+   </delete>
+   
+   <!-- 검색-->
+	<select id="search" resultType="lab.solo.vo.Article" parameterType="hashmap">
+		select rn,num, category, subject, writer, idate, rcount 
+		from(select @ROWNUM := @ROWNUM + 1 AS rn, num, category, subject, writer, idate, rcount from trade,
+		(select @rownum:=0) tmp) a
+		where subject like #{subject}
+		order by rn desc;    
+	  </select>
+  	
+  </mapper>

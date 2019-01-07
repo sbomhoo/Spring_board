@@ -1,0 +1,126 @@
+------------------------------1.룸메이트 게시판----------------------------
+CREATE TABLE bbs_comment (
+	num INT(10)  AUTO_INCREMENT,
+	rnum INT(10) ,
+	writer VARCHAR(15),
+	idate VARCHAR(50),
+	contents VARCHAR(300),
+	password VARCHAR(10),
+	ip VARCHAR(50),
+	PRIMARY KEY (`num`)
+);
+
+
+
+CREATE TABLE roommate (
+	num INT(10)  AUTO_INCREMENT,
+	subject VARCHAR(100),
+	area VARCHAR(20) ,
+	writer VARCHAR(15) ,
+	idate VARCHAR(50),
+	file VARCHAR(100),
+	html VARCHAR(100) ,
+	contents VARCHAR(1000),
+	ip VARCHAR(50) ,
+	rcount INT(10) NOT NULL DEFAULT 0,
+	PRIMARY KEY (`num`)
+);
+
+
+
+
+
+
+----------------------------------------2.자유게시판 -------------------------------------
+
+CREATE TABLE freeboard(
+	num INT(10)  AUTO_INCREMENT,
+	subject VARCHAR(100),
+	area VARCHAR(20) ,
+	writer VARCHAR(15) ,
+	idate VARCHAR(50),
+	file VARCHAR(100),
+	html VARCHAR(100) ,
+	contents VARCHAR(1000),
+	ip VARCHAR(50) ,
+	rcount INT(10) NOT NULL DEFAULT 0,
+	PRIMARY KEY (`num`)
+);
+
+CREATE TABLE bbs_comment2 (
+	num INT(10)  AUTO_INCREMENT,
+	rnum INT(10) ,
+	writer VARCHAR(15),
+	idate VARCHAR(50),
+	contents VARCHAR(300),
+	password VARCHAR(10),
+	ip VARCHAR(50),
+	PRIMARY KEY (`num`)
+);
+------------------------------------------3.공지사항 게시판 -------------------------------------
+CREATE TABLE notice (
+	num INT(10)  AUTO_INCREMENT,
+	subject VARCHAR(100),
+	category VARCHAR(20) ,
+	writer VARCHAR(15) ,
+	idate VARCHAR(50),
+	html VARCHAR(100) ,
+	contents VARCHAR(1000),
+	ip VARCHAR(50) ,
+	rcount INT(10) NOT NULL DEFAULT 0,
+	PRIMARY KEY (`num`)
+);
+------------------------------------------4.트레이드 게시판 -------------------------------------
+CREATE TABLE trade (
+	num INT(10)  AUTO_INCREMENT,
+	subject VARCHAR(100),
+	category VARCHAR(20) ,
+	writer VARCHAR(15) ,
+	idate VARCHAR(50),
+	file VARCHAR(100),
+	html VARCHAR(100) ,
+	contents VARCHAR(1000),
+	ip VARCHAR(50) ,
+	rcount INT(10) NOT NULL DEFAULT 0 ,
+	PRIMARY KEY (`num`)
+);
+CREATE TABLE bbs_comment3 (
+	num INT(10)  AUTO_INCREMENT,
+	rnum INT(10) ,
+	writer VARCHAR(15),
+	idate VARCHAR(50),
+	contents VARCHAR(300),
+	password VARCHAR(10),
+	ip VARCHAR(50),
+	PRIMARY KEY (`num`)
+);
+----------------------------------기타-------------------------------------------------------------
+//회원 정보
+create table clientinfo(
+	userid varchar(15),
+	userpw varchar(30),
+	username varchar(20),
+	email varchar(30),
+	phone INT(30),
+	birth VARCHAR(50),
+	address varchar(50),
+	admincheck char(1),
+	constraint clientinfo_pk primary key(userid)
+);
+
+create table bbs_reply(
+   	num int(10) auto_increment,
+	subject varchar(100),
+	writer varchar(15),
+	password  varchar(15),
+	idate datetime,
+	html varchar(100),
+	contents varchar(1000),
+	email varchar(50),
+	homepage varchar(50),
+	ip varchar(30),
+	rnum varchar(30),
+	rcount int(10),
+	vcount int(10),
+	constraint roommate_pk primary key(num)
+);

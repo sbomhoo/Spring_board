@@ -1,0 +1,298 @@
+html, body, div, span, applet, object, iframe, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+html,body { height: 100%; margin: 0; padding: 0; }
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+body {
+    line-height: 1;
+}
+ol, ul {
+    list-style: none;
+}
+blockquote, q {
+    quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: '';
+    content: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+#container {
+min-height: 100%; 
+/*relative 선언을 통해 하단바의 absolute position 이 정확한 위치에 오도록 한다.*/
+position: relative;
+/*content 시작 위치부터 그라디언트 효과가 나타나도록 한다.*/
+}
+#container>#header {
+height: 255px;
+background-color: white;
+}
+#container>#content {
+/* 하단바가 표시되는 공간 부여*/
+    height: auto; 
+    padding-bottom: 50px;
+}
+#container>#footer {
+/* 하단바를 하단에 고정*/
+position: absolute;
+bottom: 0;
+width: 100%;
+height: 50px;
+background-color: silver;
+}
+/*--header--*/
+a {
+    text-decoration: none;
+}
+body{
+	width: 960px;
+	margin: 0 auto;
+}
+#container>#header>#main_header {
+    width: 960px;
+    margin: 0 auto;
+    height: 160px;
+    position: relative;
+}
+
+#container>#header>#main_header>#title {
+    float: left;
+    position: absolute;
+    top: 50px;
+}
+
+#container>#header>#main_header>#main_gnb {
+    position: absolute;
+    right: 0;
+    top: 10px;
+}
+
+#container>#header>#main_header>#main_lnb {
+    position: absolute;
+    right: 0;
+    top: 95px;
+}
+
+#title {
+    font-family: 'Roboto Condensed', sans-serif;
+}
+
+#main_gnb>ul {
+    overflow: hidden;
+}
+
+#main_gnb>ul>li {
+    float: left;
+}
+
+#main_gnb>ul>li>a {
+    display: block;
+    padding: 2px 10px;
+    border: 1px solid black;
+}
+
+#main_gnb>ul>li>a:hover {
+    background: black;
+    color: white;
+}
+
+#main_gnb>ul>li:first-child>a {
+    border-radius: 10px 0 0 10px;
+}
+
+#main_gnb>ul>li:last-child>a {
+    border-radius: 0 10px 10px 0;
+}
+
+#main_lnb>ul {
+    overflow: hidden;
+}
+
+#main_lnb>ul>li {
+    float: left;
+}
+
+#main_lnb>ul>li>a {
+    display: block;
+    padding: 10px 20px;
+    border: 1px solid black;
+}
+
+#main_lnb>ul>li>a:hover {
+    background: black;
+    color: white;
+}
+
+#main_lnb>ul>li:first-child>a {
+    border-radius: 10px 0 0 10px;
+}
+
+#main_lnb>ul>li:last-child>a {
+    border-radius: 0 10px 10px 0;
+}
+/*--content--*/
+#main_lnb>ul>li>#notice{
+    color:white;
+    text-decoration: underline;
+    background: black;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;      
+}
+
+#main_lnb>ul>li>#chatting{
+    color:white;
+    text-decoration: underline;
+    background: black;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;      
+}
+
+#main_lnb>ul>li>#board{
+    color:white;
+    text-decoration: underline;
+    background: black;
+     
+}
+#main_lnb>ul>li>#roommate{
+    color:white;
+    text-decoration: underline;
+    background: black;
+
+}
+#main_lnb>ul>li>#trade{
+    color:white;
+    text-decoration: underline;
+    background: black;
+
+}
+#content>#table_container{
+    margin: 0;
+    height: auto;
+}
+#main-row{
+	width: 880px;
+	margin : 0 0 0 70px;
+    overflow: hidden;
+    position: relative;
+}
+#main-row>#category{
+    width: 100px;
+    float: left;
+}
+#main-row>#content_table{
+    
+    width: 880px;
+  	float:left;
+
+}
+#num_{
+	width:70px;
+}
+#cago_{
+	width:100px;
+}
+
+#name_{
+	width:150px;
+}
+#date_{
+	width:180px;
+}
+#count_{
+	width:70px;
+}
+#content>#sections{
+    width: auto;
+    margin: 0;
+    height: auto;
+    padding: 0px;
+    position: relative;
+}
+#content>#sections>#main_section1 {
+    left: 10px;
+    top: 0px;
+    
+    width: 512px;
+    margin: 0px;
+    float: left;
+    position: absolute;
+}
+
+#content>#sections>#main_section2 {
+    left: 652px;
+    top: 0px;
+    
+    width: 512px;
+    margin: 0px;
+    float: left;
+    position: absolute;
+}
+
+#content>#sections>#main_section3 {
+    left: 100px;
+    top: 330px;
+    width: 512px;
+    float: left;
+    position: absolute;
+}
+
+#content>#sections>#main_section4 {
+    left: 652px;
+    top: 330px;
+    width: 512px;
+    float: left;
+    position: absolute; 
+}
+
+#content>#main_aside {
+    width: 190px;
+    float: left;
+}
+
+.demo-card-wide.mdl-card {
+    width: 512px;
+}
+
+.demo-card-wide > .mdl-card__title {
+    color: #000;
+    height: 234px;
+    background: url('../assets/demos/welcome_card.jpg') center / cover;
+}
+
+.demo-card-wide > .mdl-card__menu {
+    color: #000;
+}
+
+/*#main_footer {
+    width: auto;
+    bottom:0px;
+    margin: 0 auto;
+    position: relative;
+}*/

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+<context:annotation-config/>
+<context:component-scan base-package="lab.solo"/>
+
+    <!-- MultipartResolver 설정 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="100000000" />
+        <property name="maxInMemorySize" value="100000000" />
+    </bean>
+
+<bean id="downloadView" class="lab.solo.service.DownloadView"/>
+
+<!-- JNDI 기반의 설정 설정 예시 -->	
+<bean id="defaultDataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+	<property name="jndiName" value="jdbc/mysql" />
+	<property name="resourceRef" value="true" />
+</bean>
+
+
+<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+	<property name="dataSource" ref="defaultDataSource" />
+	<property name="mapperLocations" value="classpath*:mappers/*Mapper.xml" /> 
+</bean>
+
+<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+	<constructor-arg index="0" ref="sqlSessionFactory" />
+</bean>
+<bean
+ class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+ <property name="prefix" value="/WEB-INF/view/"></property>
+ <property name="suffix" value=".jsp"></property>
+</bean>
+</beans>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="lab.solo.SoloMapper">
+   <!-- 로그인 관련 sql -->
+   <select id="login" resultType="lab.solo.vo.UserVO" parameterType="hashmap">
+         select * from clientinfo where userid = #{userid} and userpw = #{userpw}
+   </select>
+ 
+    <select id="searchUser" resultType="lab.solo.vo.UserVO" parameterType="string">
+      select * from clientinfo
+      where userid = #{userid}
+   </select>
+   <select id="findUser" resultType="lab.solo.vo.UserVO" parameterType="hashmap">
+      select * from clientinfo
+      where 
+      <if test="userid != null">
+         userid like #{userid}
+      </if> 
+      <if test="username != null">
+         username like #{username}
+      </if>
+      <if test="email != null">
+         email like #{email}
+      </if>
+   </select>
+  
+   <select id="searchAll" resultType="lab.solo.vo.UserVO">
+      select * from clientinfo
+   </select> 
+   <!-- 회원가입 sql -->
+   <insert id="joinUser" parameterType="lab.solo.vo.UserVO">
+      insert into clientinfo(userid, userpw, username, email, phone, birth, address)
+      values (#{userid}, #{userpw}, #{username}, #{email}, #{phone}, #{birth}, #{address})
+   </insert>
+     <!-- 회원정보 수정 sql -->
+   <update id="modifyUser" parameterType="lab.solo.vo.UserVO">
+      update clientinfo set userpw=#{userpw}, email=#{email}, phone=#{phone}, address=#{address}
+      where userid=#{userid}
+   </update> 
+   <!-- 회원삭제  sql -->
+   <delete id="removeUser" parameterType="string">
+      delete from clientinfo where userid = #{userid}
+   </delete>
+      <!-- 아이디체크 sql -->
+   <select id="id_check" resultType="lab.solo.vo.UserVO" parameterType="string">
+      select * from clientinfo
+      where userid = #{userid} 
+   </select>
+        
+</mapper>   
